@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.renebergelt.maven.plugins</groupId>
+	<artifactId>compile-switches-test</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<build>
+		<!-- we have to add the generated-sources dir here ot eclipse's m2e plugin 
+			does find the classes -->
+		<plugins>
+			<plugin>
+				<groupId>de.renebergelt.maven.plugins</groupId>
+				<artifactId>compile-switches-maven-plugin</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<switches>
+								<switch>
+									<packageName>de.renebergelt.test</packageName>
+									<className>Switches</className>
+									<fields>
+										<field>
+											<fieldName>DEBUG</fieldName>
+											<fieldValue>false</fieldValue>
+										</field>
+									</fields>
+								</switch>
+							</switches>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- needed for eclipse integration (tells eclipse's m2e plugin to search source files in the generated-sources folder)-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/compile-switches</source>								
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>		
+	</build>
+</project>
